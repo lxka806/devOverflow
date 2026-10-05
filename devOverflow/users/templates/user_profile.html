@@ -1,0 +1,14 @@
+{% extends "master.html" %}
+
+{% block main %}
+    <div>
+        <h1>{{ user.name }}</h1>
+        <p>{{ user.email }}</p>
+        <p>{% if user.bio == "" %}
+                no bio yet
+                {% else %}
+                    user.bio
+            {% endif %}
+        </p>
+    </div>
+{% endblock main %}

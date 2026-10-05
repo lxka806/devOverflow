@@ -1,0 +1,12 @@
+{% extends "master.html" %}
+
+
+{% block main %}
+    <div>
+        <form method="post">
+            {% csrf_token %}
+            {{ context }}
+            <input type="submit">
+        </form>
+    </div>
+{% endblock main %}

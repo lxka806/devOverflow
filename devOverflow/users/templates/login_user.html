@@ -1,0 +1,12 @@
+{% extends "master.html" %}
+
+{% block main %}
+    <div>
+        <form method='post'>
+            {% csrf_token %}
+            {{ error }}
+            {{ login_form }}
+            <input type="submit">
+        </form>
+    </div>
+{% endblock main %}
