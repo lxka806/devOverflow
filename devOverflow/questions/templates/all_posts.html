@@ -1,0 +1,16 @@
+{% extends "master.html" %}
+
+{% block main %}
+    <h1>Questions</h1>
+    <p><a href="{% url 'add_questions' %}">Ask a question</a></p>
+
+    {% for question in all_posts %}
+        <article>
+            <h2>{{ question.title }}</h2>
+            <p>{{ question.context|linebreaks }}</p>
+            <p>Asked by {{ question.creator.name }} on {{ question.created_at }}</p>
+        </article>
+    {% empty %}
+        <p>No questions have been posted yet.</p>
+    {% endfor %}
+{% endblock main %}

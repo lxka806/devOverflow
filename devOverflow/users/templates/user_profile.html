@@ -6,8 +6,8 @@
         <p>{{ user.email }}</p>
         <p>{% if user.bio == "" %}
                 no bio yet
-                {% else %}
-                    user.bio
+            {% else %}
+                    {{ user.bio }}
             {% endif %}
         </p>
     </div>

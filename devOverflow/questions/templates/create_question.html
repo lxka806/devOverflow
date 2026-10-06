@@ -1,0 +1,11 @@
+{% extends "master.html" %}
+
+{% block main %}
+    <h1>Ask a question</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Post question</button>
+    </form>
+    <p><a href="{% url 'main_page' %}">Back to questions</a></p>
+{% endblock main %}
