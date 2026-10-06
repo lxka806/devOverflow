@@ -11,3 +11,18 @@ class Questions(models.Model):
         related_name="posts"
     )
     created_at = models.DateTimeField(auto_now_add=True)
+
+class Comments(models.Model):
+    author = models.ForeignKey(
+        Users,
+        on_delete=models.CASCADE,
+        related_name="comments" 
+    )
+
+    context = models.CharField()
+
+    question = models.ForeignKey(
+        Questions,
+        related_name="post", 
+        on_delete=models.CASCADE
+        )

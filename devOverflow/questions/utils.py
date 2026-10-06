@@ -1,5 +1,4 @@
-from .models import Questions
-
+from .models import Questions, Comments
 
 def save_question(data, creator):
     return Questions.objects.create(

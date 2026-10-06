@@ -2,7 +2,7 @@ from django.shortcuts import redirect, render
 
 from users.utils import get_curent_user
 
-from .form import QuestionForm
+from .form import QuestionForm, add_comment
 from .models import Questions
 from .utils import save_question
 
