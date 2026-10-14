@@ -1,21 +1,82 @@
 {% extends "master.html" %}
+{% load static %}
 
-{% block title %}
-    post details
-{% endblock title %}
-
+{% block title %}{{ question.title }} · DevOverflow{% endblock title %}
+{% block extra_styles %}
+    <link rel="stylesheet" href="{% static 'CSS/question_detail.css' %}">
+{% endblock extra_styles %}
 
 {% block main %}
-    <h1>post details</h1>
+<div class="detail-wrap">
+    <a class="back-to-questions" href="{% url 'main_page' %}"><span aria-hidden="true">←</span> All questions</a>
+    <article class="question-detail-card">
+        <div class="detail-eyebrow"><span class="status-dot"></span> QUESTION</div>
+        <h1>{{ question.title }}</h1>
+        <div class="detail-author-row">
+            <a class="author-link" href="{% url 'user_info' question.creator.id %}">
+                {% if question.creator.avatar and question.creator.avatar.name != "avatars/default.png" %}
+                    <img class="avatar avatar-medium" src="{{ question.creator.avatar.url }}" alt="">
+                {% else %}
+                    <span class="avatar avatar-medium avatar-fallback" aria-hidden="true">{{ question.creator.name|first|upper }}</span>
+                {% endif %}
+                <span class="author-name">{{ question.creator.name }}</span>
+            </a>
+            <span class="meta-separator" aria-hidden="true">·</span>
+            <time datetime="{{ question.created_at|date:'c' }}">Asked {{ question.created_at|date:"M j, Y" }}</time>
+        </div>
+        <div class="question-content">{{ question.context|linebreaks }}</div>
+    </article>
 
-    <div>
-        <h2>{{ question.title }}</h2>
-        <p>{{ question.context }}</p>
-    </div>
+    <section class="responses-section" aria-labelledby="responses-heading">
+        <div class="responses-heading">
+            <div>
+                <p class="eyebrow">COMMUNITY KNOWLEDGE</p>
+                <h2 id="responses-heading">Responses <span class="count-pill">{{ comments|length }}</span></h2>
+            </div>
+            <span class="responses-caption">Be kind. Be constructive.</span>
+        </div>
+        <div class="response-list">
+            {% for comment in comments %}
+                <article class="response-card">
+                    <div class="response-author">
+                        <a class="author-link" href="{% url 'user_info' comment.author.id %}">
+                            {% if comment.author.avatar and comment.author.avatar.name != "avatars/default.png" %}
+                                <img class="avatar avatar-medium" src="{{ comment.author.avatar.url }}" alt="">
+                            {% else %}
+                                <span class="avatar avatar-medium avatar-fallback" aria-hidden="true">{{ comment.author.name|first|upper }}</span>
+                            {% endif %}
+                            <span class="author-name">{{ comment.author.name }}</span>
+                        </a>
+                        <time datetime="{{ comment.created_at|date:'c' }}">{{ comment.created_at|date:"M j, Y · g:i A" }}</time>
+                    </div>
+                    <div class="response-content">{{ comment.context|linebreaks }}</div>
+                </article>
+            {% empty %}
+                <div class="response-empty">
+                    <span class="empty-icon" aria-hidden="true">↳</span>
+                    <div><h3>No responses yet</h3><p>Have an idea? Help this developer get unstuck.</p></div>
+                </div>
+            {% endfor %}
+        </div>
+    </section>
 
-    <hr>
-    <h3>comments</h3>
-    <div>
-        
-    </div>
+    <section class="response-editor" aria-labelledby="response-editor-heading">
+        {% if current_user %}
+            <div class="editor-heading">
+                <span class="editor-spark" aria-hidden="true">✳</span>
+                <div><h2 id="response-editor-heading">Add to the conversation</h2><p>Your insight could be exactly what someone needs.</p></div>
+            </div>
+            <form method="post" class="response-form">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button class="button button-primary" type="submit">Post response <span aria-hidden="true">↗</span></button>
+            </form>
+        {% else %}
+            <div class="login-prompt">
+                <div><h2 id="response-editor-heading">Have something to add?</h2><p>Log in to share an answer with the community.</p></div>
+                <a class="button button-primary" href="{% url 'login_user' %}">Log in to respond <span aria-hidden="true">→</span></a>
+            </div>
+        {% endif %}
+    </section>
+</div>
 {% endblock main %}

@@ -1,12 +1,27 @@
 {% extends "master.html" %}
+{% load static %}
 
+{% block title %}Log in · DevOverflow{% endblock title %}
+{% block extra_styles %}<link rel="stylesheet" href="{% static 'CSS/auth.css' %}">{% endblock extra_styles %}
 {% block main %}
-    <div>
-        <form method='post'>
-            {% csrf_token %}
-            {{ error }}
-            {{ login_form }}
-            <input type="submit">
-        </form>
-    </div>
+    <section class="auth-layout">
+        <div class="auth-intro">
+            <p class="eyebrow"><span class="status-dot"></span> YOUR COMMUNITY, IN YOUR CORNER</p>
+            <h1>Good to have<br><span class="text-accent">you back.</span></h1>
+            <p>Pick up where you left off. Your next breakthrough could be one conversation away.</p>
+            <div class="auth-decoration" aria-hidden="true"><span>&lt;</span><span>/</span><span>&gt;</span></div>
+        </div>
+        <div class="auth-card">
+            <p class="eyebrow">WELCOME BACK</p>
+            <h2>Log in to DevOverflow</h2>
+            <p class="auth-subtitle">Join the conversation and share what you know.</p>
+            {% if error %}<div class="form-errors" role="alert">{{ error }}</div>{% endif %}
+            <form method="post" class="auth-form">
+                {% csrf_token %}
+                {{ login_form.as_p }}
+                <button class="button button-primary auth-submit" type="submit">Log in <span aria-hidden="true">→</span></button>
+            </form>
+            <p class="auth-switch">New to the community? <a href="{% url 'register' %}">Create an account</a></p>
+        </div>
+    </section>
 {% endblock main %}

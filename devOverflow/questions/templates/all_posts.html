@@ -1,46 +1,113 @@
 
 {% extends "master.html" %}
+{% load static %}
+
+{% block title %}Questions · DevOverflow{% endblock title %}
+
+{% block extra_styles %}
+    <link rel="stylesheet" href="{% static 'CSS/all_posts.css' %}">
+{% endblock extra_styles %}
 
 {% block main %}
+<section class="feed-heading">
+    <div>
+        <p class="eyebrow"><span class="status-dot"></span> DEVELOPER COMMUNITY</p>
+        <h1>Find your next <span class="text-accent">aha.</span></h1>
+        <p class="page-intro">Real questions. Thoughtful answers. Better code, together.</p>
+    </div>
+    <a class="button button-primary heading-ask" href="{% url 'add_questions' %}"><span aria-hidden="true">＋</span> Ask a question</a>
+</section>
 
-<h1>Questions</h1>
-<p><a href="{% url 'add_questions' %}">Ask a question</a></p>
-
-{% for question in all_posts %}
-    <article class="question-card">
-        <h2>{{ question.title }}</h2>
-
-        <p>{{ question.context|linebreaks }}</p>
-
-        <div class="question-author">
-            {% if question.creator.avatar %}
-                <a class="avatar" href="{% url 'user_info' question.creator.id %}">
-                    <img
-                        src="{{ question.creator.avatar.url }}"
-                        alt="{{ question.creator.name }}'s avatar"
-                        class="question-avatar"
-                    >
-                </a>
-            {% endif %}
-
-            <p>
-                Asked by {{ question.creator.name }}
-                on {{ question.created_at }}
-            </p>
+<div class="feed-layout">
+    <section class="question-feed" aria-labelledby="question-list-heading">
+        <div class="feed-toolbar">
+            <div class="feed-count">
+                <h2 id="question-list-heading">Questions</h2>
+                <span class="count-pill">{{ result_count }}</span>
+            </div>
+            <form class="sort-form" method="get" action="{% url 'main_page' %}">
+                {% if search_query %}<input type="hidden" name="q" value="{{ search_query }}">{% endif %}
+                <label for="question-sort">Sort by</label>
+                <select id="question-sort" name="sort">
+                    <option value="latest" {% if sort_order == "latest" %}selected{% endif %}>Latest</option>
+                    <option value="most_discussed" {% if sort_order == "most_discussed" %}selected{% endif %}>Most discussed</option>
+                </select>
+                <button class="sort-apply" type="submit">Apply</button>
+            </form>
         </div>
-    </article>
-{% empty %}
-    <p>No questions have been posted yet.</p>
-{% endfor %}
+        {% if search_query %}
+            <p class="search-summary">Showing results for <strong>“{{ search_query }}”</strong> · <a href="{% url 'main_page' %}">Clear search</a></p>
+        {% endif %}
 
-<style>
-    .question-avatar {
-        width: 42px;
-        height: 42px;
-        border-radius: 50%;
-        object-fit: cover;
-        border: 2px solid #8f6a46;
-    }
-</style>
+        <div class="question-list">
+            {% for question in all_posts %}
+                <article class="question-card">
+                    <div class="question-metrics" aria-label="{{ question.comments_count }} comments">
+                        <span class="metric-number">{{ question.comments_count }}</span>
+                        <span class="metric-label">comments</span>
+                    </div>
+                    <div class="question-card-body">
+                        <h3><a href="{% url 'question_detail' question.id %}">{{ question.title }}</a></h3>
+                        <p class="question-excerpt">{{ question.context|truncatewords:34 }}</p>
+                        <div class="question-meta">
+                            <a class="author-link" href="{% url 'user_info' question.creator.id %}">
+                                {% if question.creator.avatar and question.creator.avatar.name != "avatars/default.png" %}
+                                    <img class="avatar avatar-tiny" src="{{ question.creator.avatar.url }}" alt="">
+                                {% else %}
+                                    <span class="avatar avatar-tiny avatar-fallback" aria-hidden="true">{{ question.creator.name|first|upper }}</span>
+                                {% endif %}
+                                <span>{{ question.creator.name }}</span>
+                            </a>
+                            <span class="meta-separator" aria-hidden="true">·</span>
+                            <time datetime="{{ question.created_at|date:'c' }}">{{ question.created_at|date:"M j, Y" }}</time>
+                        </div>
+                    </div>
+                    <a class="question-open" href="{% url 'question_detail' question.id %}" aria-label="Open {{ question.title }}">↗</a>
+                </article>
+            {% empty %}
+                <div class="empty-state">
+                    <span class="empty-icon" aria-hidden="true">⌕</span>
+                    {% if search_query %}
+                        <h3>No matching questions</h3>
+                        <p>Try a different search, or be the first to ask about it.</p>
+                        <a class="button button-primary" href="{% url 'add_questions' %}">Ask a question</a>
+                    {% else %}
+                        <h3>The first question is yours.</h3>
+                        <p>Every great solution starts with a good question.</p>
+                        <a class="button button-primary" href="{% url 'add_questions' %}">Ask the community</a>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    </section>
 
+    <aside class="feed-sidebar" id="community" aria-label="Community overview">
+        <section class="sidebar-panel community-panel">
+            <p class="sidebar-label">THE COMMUNITY</p>
+            <h2>Build in the open.</h2>
+            <p>A space for curious developers to share knowledge and move forward.</p>
+            <div class="community-stats">
+                <div><strong>{{ question_count }}</strong><span>questions</span></div>
+                <div><strong>{{ comment_count }}</strong><span>responses</span></div>
+            </div>
+            <a class="sidebar-ask-link" href="{% url 'add_questions' %}">Share what you're working on <span aria-hidden="true">→</span></a>
+        </section>
+        <section class="sidebar-panel active-panel">
+            <div class="sidebar-heading">
+                <p class="sidebar-label">IN THE CONVERSATION</p>
+                <span class="live-indicator" aria-label="Recently active"></span>
+            </div>
+            <h2>Recently active</h2>
+            {% for question in active_questions %}
+                <a class="active-question" href="{% url 'question_detail' question.id %}">
+                    <span>{{ question.title }}</span>
+                    <small>{{ question.comments_count }} {% if question.comments_count == 1 %}response{% else %}responses{% endif %}</small>
+                </a>
+            {% empty %}
+                <p class="sidebar-empty">Open the conversation by asking the first question.</p>
+            {% endfor %}
+        </section>
+        <div class="sidebar-note"><span aria-hidden="true">⌘</span> Good questions make great developers.</div>
+    </aside>
+</div>
 {% endblock main %}

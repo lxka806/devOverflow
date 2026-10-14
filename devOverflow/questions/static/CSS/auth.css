@@ -1,0 +1,31 @@
+.auth-layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(340px, 430px); align-items: center; gap: 85px; max-width: 960px; min-height: 530px; margin: 0 auto; }
+.auth-intro { position: relative; min-height: 300px; padding-top: 35px; }
+.auth-intro h1 { margin-bottom: 17px; font-size: clamp(39px, 5vw, 55px); }
+.auth-intro > p:last-of-type { max-width: 380px; color: var(--muted); font-size: 13px; line-height: 1.8; }
+.auth-decoration { display: flex; align-items: center; gap: 9px; margin-top: 48px; color: var(--muted-2); font-family: var(--mono); font-size: 24px; opacity: 0.36; }
+.auth-decoration span:nth-child(2) { color: var(--green); font-size: 19px; }
+.auth-card { padding: 30px; border: 1px solid var(--border); border-radius: 9px; background: linear-gradient(145deg, rgba(17, 24, 35, 0.94), rgba(13, 18, 26, 0.9)); box-shadow: 0 20px 70px rgba(0, 0, 0, 0.17); }
+.auth-card > .eyebrow { margin-bottom: 8px; }
+.auth-card h2 { margin: 0; font-size: 21px; letter-spacing: -0.7px; }
+.auth-subtitle { margin: 6px 0 23px; color: var(--muted); font-size: 10px; }
+.auth-form p { margin: 0 0 16px; }
+.auth-form label { display: block; margin-bottom: 7px; color: #cad4e1; font-size: 10px; font-weight: 700; }
+.auth-form input { display: block; width: 100%; height: 41px; padding: 0 11px; font-size: 11px; }
+.auth-submit { width: 100%; margin-top: 4px; }
+.auth-switch { margin: 20px 0 0; padding-top: 16px; border-top: 1px solid var(--border-soft); color: var(--muted); font-size: 10px; text-align: center; }
+.auth-switch a { color: var(--green); font-weight: 700; }
+.auth-switch a:hover { color: #d1ff8a; }
+
+@media (max-width: 760px) {
+    .auth-layout { grid-template-columns: minmax(0, 1fr) minmax(290px, 370px); gap: 30px; }
+    .auth-intro h1 { font-size: 40px; }
+}
+
+@media (max-width: 640px) {
+    .auth-layout { display: flex; flex-direction: column; align-items: stretch; gap: 22px; min-height: 0; }
+    .auth-intro { min-height: 0; padding-top: 5px; }
+    .auth-intro h1 { font-size: 36px; }
+    .auth-intro > p:last-of-type { margin-bottom: 0; font-size: 11px; }
+    .auth-decoration { display: none; }
+    .auth-card { padding: 23px 19px; }
+}

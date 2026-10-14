@@ -1,37 +1,36 @@
 {% extends "master.html" %}
+{% load static %}
 
-
-{% block title %}user Details{% endblock title %}
+{% block title %}{{ user.name }} · DevOverflow{% endblock title %}
+{% block extra_styles %}<link rel="stylesheet" href="{% static 'CSS/profile.css' %}">{% endblock extra_styles %}
 
 {% block main %}
-    <h1>User details</h1>
-
-    <h1>
-        {{ user.name }}
-    </h1>
-    <img src={{ user.avatar.url }} alt="">
-    <p>bio: {% if user.bio %}
-                {{ user.bio }}
-            {% else %}
-                no bio yet
-            {% endif %}
-    </p>
-
-    <div>
-        <h2>Users questions</h2>
+<div class="profile-page">
+    <section class="profile-card">
+        <div class="profile-cover"><span class="cover-orbit orbit-one"></span><span class="cover-orbit orbit-two"></span></div>
+        <div class="profile-main">
+            <div class="profile-identity">
+                {% if user.avatar and user.avatar.name != "avatars/default.png" %}
+                    <img class="avatar profile-avatar" src="{{ user.avatar.url }}" alt="{{ user.name }}'s avatar">
+                {% else %}
+                    <span class="avatar profile-avatar avatar-fallback" aria-hidden="true">{{ user.name|first|upper }}</span>
+                {% endif %}
+                <div><p class="eyebrow">COMMUNITY MEMBER</p><h1>{{ user.name }}</h1><p class="profile-email">Developer on DevOverflow</p></div>
+            </div>
+            {% if user.bio %}<p class="profile-bio">{{ user.bio }}</p>{% else %}<p class="profile-bio">No bio added yet.</p>{% endif %}
+            <div class="profile-facts"><span><strong>{{ posts|length }}</strong> questions asked</span><span>Member of the developer community</span></div>
+        </div>
+    </section>
+    <section class="profile-questions">
+        <div class="profile-section-heading"><div><p class="eyebrow">COMMUNITY CONTRIBUTIONS</p><h2>{{ user.name }}'s questions</h2></div></div>
         {% for question in posts %}
-            <a href={% url 'question_detail' question.id %}>
-                <h1>{{ question.title }}</h1>
-                <p>{{ question.context }}</p>
-            </a>
+            <article class="profile-question">
+                <div><h3><a href="{% url 'question_detail' question.id %}">{{ question.title }}</a></h3><p>{{ question.context|truncatewords:28 }}</p><time datetime="{{ question.created_at|date:'c' }}">{{ question.created_at|date:"M j, Y" }}</time></div>
+                <a class="question-open" href="{% url 'question_detail' question.id %}" aria-label="Open {{ question.title }}">↗</a>
+            </article>
+        {% empty %}
+            <div class="empty-state profile-empty"><span class="empty-icon" aria-hidden="true">⌘</span><h3>No questions here yet.</h3><p>Check back later for new contributions.</p></div>
         {% endfor %}
-    </div>
-
-    <style>
-        img{
-            width: 120px;
-            border-radius: 20px
-        }
-    </style>
-
+    </section>
+</div>
 {% endblock main %}

@@ -1,67 +1,24 @@
 
 {% extends "master.html" %}
-
+{% load static %}
+{% block title %}Edit profile · DevOverflow{% endblock title %}
+{% block extra_styles %}<link rel="stylesheet" href="{% static 'CSS/profile.css' %}">{% endblock extra_styles %}
 {% block main %}
-
-<style>
-    .edit-avatar{
-        width: 200px
-    }
-</style>
-
-<div class="edit-container">
-    <h1>Edit Profile</h1>
-
-    <p class="edit-subtitle">
-        Update your personal information
-    </p>
-
-    {% if user.avatar %}
-        <img class="edit-avatar"
-            src="{{ user.avatar.url }}"
-            alt="Current avatar">
-    {% endif %}
-
-    {% if error %}
-        <div class="edit-error">{{ error }}</div>
-    {% endif %}
-
-    <form class="edit-form"
-        method="POST"
-        enctype="multipart/form-data">
-
-        {% csrf_token %}
-
-        <label for="name">Name</label>
-        <input
-            type="text"
-            id="name"
-            name="name"
-            value="{{ user.name }}"
-            required
-        >
-
-        <label for="avatar">Change profile photo</label>
-        <input
-            type="file"
-            id="avatar"
-            name="avatar"
-            accept="image/*"
-        >
-
-        <label for="bio">Change your bio</label>
-        <input 
-            type="text"
-            name="bio">
-
-        <button class="edit-btn" type="submit">
-            Save Changes
-        </button>
-    </form>
-
-    <a class="back-link" href="{% url 'profile' %}">
-        Back to Profile
-    </a>
+<div class="edit-profile-page">
+    <a class="back-to-questions" href="{% url 'profile' %}"><span aria-hidden="true">←</span> Back to profile</a>
+    <section class="edit-profile-card">
+        <p class="eyebrow">YOUR ACCOUNT</p>
+        <h1>Make it yours.</h1>
+        <p class="page-intro">Update how the community sees you.</p>
+        {% if error %}<div class="form-errors" role="alert">{{ error }}</div>{% endif %}
+        <form class="edit-form" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {% if user.avatar and user.avatar.name != "avatars/default.png" %}<img class="edit-avatar" src="{{ user.avatar.url }}" alt="Current profile avatar">{% endif %}
+            <div class="form-field"><label for="name">Display name</label><input type="text" id="name" name="name" value="{{ user.name }}" required></div>
+            <div class="form-field"><label for="avatar">Profile photo <span>Optional · JPG or PNG</span></label><input type="file" id="avatar" name="avatar" accept="image/*"></div>
+            <div class="form-field"><label for="bio">About you</label><textarea id="bio" name="bio" rows="5" placeholder="What do you like building?">{{ user.bio }}</textarea></div>
+            <div class="form-actions"><a class="button button-quiet" href="{% url 'profile' %}">Cancel</a><button class="button button-primary" type="submit">Save changes</button></div>
+        </form>
+    </section>
 </div>
-
 {% endblock main %}

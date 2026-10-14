@@ -1,11 +1,51 @@
 {% extends "master.html" %}
+{% load static %}
 
+{% block title %}Ask a question · DevOverflow{% endblock title %}
+{% block extra_styles %}
+    <link rel="stylesheet" href="{% static 'CSS/create_question.css' %}">
+{% endblock extra_styles %}
 {% block main %}
-    <h1>Ask a question</h1>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Post question</button>
-    </form>
-    <p><a href="{% url 'main_page' %}">Back to questions</a></p>
+<div class="ask-layout">
+    <section class="ask-main">
+        <a class="back-to-questions" href="{% url 'main_page' %}"><span aria-hidden="true">←</span> Back to questions</a>
+        <p class="eyebrow"><span class="status-dot"></span> ASK THE COMMUNITY</p>
+        <h1>Let's solve it <span class="text-accent">together.</span></h1>
+        <p class="page-intro">A clear question is the first step to a great answer.</p>
+        <form method="post" class="question-form">
+            {% csrf_token %}
+            {% if form.non_field_errors %}<div class="form-errors">{{ form.non_field_errors }}</div>{% endif %}
+            <div class="form-field">
+                <label for="{{ form.title.id_for_label }}">Question title <span>Be specific and imagine you're asking another developer.</span></label>
+                {{ form.title }}
+                {% if form.title.errors %}<div class="field-errors">{{ form.title.errors }}</div>{% endif %}
+                <small class="field-hint">A focused title makes it easier for the right people to find you.</small>
+            </div>
+            <div class="form-field">
+                <label for="{{ form.context.id_for_label }}">What are you trying to figure out?</label>
+                {{ form.context }}
+                {% if form.context.errors %}<div class="field-errors">{{ form.context.errors }}</div>{% endif %}
+                <small class="field-hint">Include what you expected, what happened, and any relevant error messages.</small>
+            </div>
+            <div class="form-actions">
+                <a class="button button-quiet" href="{% url 'main_page' %}">Cancel</a>
+                <button class="button button-primary" type="submit">Post your question <span aria-hidden="true">↗</span></button>
+            </div>
+        </form>
+    </section>
+    <aside class="ask-sidebar">
+        <div class="guidance-card">
+            <span class="guidance-symbol" aria-hidden="true">⌘</span>
+            <p class="sidebar-label">A FEW GOOD HABITS</p>
+            <h2>Help people help you.</h2>
+            <ul>
+                <li><span>01</span><p>Describe the problem, not just the error.</p></li>
+                <li><span>02</span><p>Share what you already tried.</p></li>
+                <li><span>03</span><p>Keep one question focused on one issue.</p></li>
+            </ul>
+            <div class="guidance-foot">Clear details lead to useful answers.</div>
+        </div>
+        <div class="editor-note"><span aria-hidden="true">i</span> Code snippets and context are welcome—paste them into the details above.</div>
+    </aside>
+</div>
 {% endblock main %}

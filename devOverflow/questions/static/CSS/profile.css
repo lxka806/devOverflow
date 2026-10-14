@@ -1,0 +1,53 @@
+.profile-page { max-width: 900px; margin: 0 auto; }
+.profile-card { overflow: hidden; border: 1px solid var(--border); border-radius: 9px; background: rgba(17, 24, 35, 0.8); }
+.profile-cover { position: relative; height: 125px; overflow: hidden; border-bottom: 1px solid rgba(183, 255, 60, 0.11); background: radial-gradient(ellipse at 78% 130%, rgba(66, 232, 255, 0.12), transparent 36%), linear-gradient(115deg, #111a23, #101923 50%, #142022); }
+.profile-cover::before { position: absolute; inset: 0; background-image: linear-gradient(rgba(148, 163, 184, 0.035) 1px, transparent 1px), linear-gradient(90deg, rgba(148, 163, 184, 0.035) 1px, transparent 1px); background-size: 27px 27px; content: ""; mask-image: linear-gradient(90deg, transparent, #000 45%, #000); }
+.cover-orbit { position: absolute; top: -104px; right: 95px; width: 265px; height: 265px; border: 1px solid rgba(183, 255, 60, 0.14); border-radius: 50%; box-shadow: 0 0 0 18px rgba(183, 255, 60, 0.018), 0 0 0 38px rgba(66, 232, 255, 0.02); }
+.orbit-two { top: -140px; right: 155px; width: 230px; height: 230px; border-color: rgba(66, 232, 255, 0.12); }
+.profile-main { position: relative; padding: 0 30px 23px; }
+.profile-identity { display: flex; align-items: flex-end; gap: 15px; margin-top: -34px; }
+.profile-avatar { width: 72px; height: 72px; border: 4px solid var(--card); background: var(--card); font-size: 23px; }
+.profile-identity .eyebrow { margin: 0 0 2px; font-size: 8px; }
+.profile-identity h1 { margin: 0; font-size: 21px; letter-spacing: -0.8px; }
+.profile-email { margin: 2px 0 0; color: var(--muted-2); font-size: 10px; }
+.profile-edit { position: absolute; top: 17px; right: 27px; min-height: 33px; font-size: 10px; }
+.profile-bio { max-width: 590px; margin: 20px 0 16px; color: #c3cedb; font-size: 11px; line-height: 1.75; }
+.profile-facts { display: flex; flex-wrap: wrap; gap: 19px; padding-top: 15px; border-top: 1px solid var(--border-soft); color: var(--muted-2); font-size: 9px; }
+.profile-facts strong { margin-right: 4px; color: var(--text); font-family: var(--mono); font-size: 12px; font-weight: 500; }
+.profile-questions { margin-top: 38px; }
+.profile-section-heading { display: flex; align-items: flex-end; justify-content: space-between; gap: 15px; margin-bottom: 12px; }
+.profile-section-heading .eyebrow { margin-bottom: 4px; }
+.profile-section-heading h2 { margin: 0; font-size: 19px; letter-spacing: -0.6px; }
+.text-link { color: var(--green); font-size: 10px; font-weight: 700; }
+.text-link:hover { color: #d1ff8a; }
+.profile-question { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 17px 8px 17px 0; border-top: 1px solid var(--border-soft); transition: background 160ms ease, padding 160ms ease; }
+.profile-question:hover { padding-left: 9px; background: linear-gradient(90deg, rgba(183, 255, 60, 0.03), transparent 80%); }
+.profile-question h3 { margin: 0; font-size: 13px; }
+.profile-question p { margin: 5px 0; color: var(--muted); font-size: 10px; }
+.profile-question time { color: var(--muted-2); font-size: 9px; }
+.profile-empty { margin-top: 15px; }
+.edit-profile-page { max-width: 650px; margin: 0 auto; }
+.edit-profile-card { padding: 27px; border: 1px solid var(--border); border-radius: 9px; background: rgba(17, 24, 35, 0.78); }
+.edit-profile-card h1 { margin: 0; font-size: 32px; letter-spacing: -1.3px; }
+.edit-profile-card > .page-intro { margin: 5px 0 23px; }
+.edit-form .form-field { margin-bottom: 18px; }
+.edit-form .form-field input, .edit-form .form-field textarea { width: 100%; padding: 11px 12px; font-size: 11px; }
+.edit-form .form-field input[type="file"] { padding: 9px; }
+.edit-form .form-field textarea { resize: vertical; }
+.edit-avatar { display: block; width: 64px; height: 64px; margin-bottom: 17px; border: 2px solid var(--border); border-radius: 50%; object-fit: cover; }
+.edit-form .form-actions { margin-top: 20px; }
+
+@media (max-width: 600px) {
+    .profile-cover { height: 96px; }
+    .profile-main { padding: 0 17px 18px; }
+    .profile-identity { gap: 10px; }
+    .profile-avatar { width: 62px; height: 62px; }
+    .profile-identity h1 { font-size: 18px; }
+    .profile-edit { top: 12px; right: 14px; }
+    .profile-bio { margin-top: 17px; }
+    .profile-facts { gap: 10px; }
+    .profile-section-heading h2 { font-size: 17px; }
+    .text-link { max-width: 100px; text-align: right; }
+    .edit-profile-card { padding: 21px 16px; }
+    .edit-profile-card h1 { font-size: 28px; }
+}

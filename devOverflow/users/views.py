@@ -70,7 +70,7 @@ def profile(req):
 
 
 def logout(req):
-    logout_user(req)
+    logout_user()
     return redirect("login_user")
 
 
