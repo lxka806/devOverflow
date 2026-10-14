@@ -1,0 +1,67 @@
+
+{% extends "master.html" %}
+
+{% block main %}
+
+<style>
+    .edit-avatar{
+        width: 200px
+    }
+</style>
+
+<div class="edit-container">
+    <h1>Edit Profile</h1>
+
+    <p class="edit-subtitle">
+        Update your personal information
+    </p>
+
+    {% if user.avatar %}
+        <img class="edit-avatar"
+            src="{{ user.avatar.url }}"
+            alt="Current avatar">
+    {% endif %}
+
+    {% if error %}
+        <div class="edit-error">{{ error }}</div>
+    {% endif %}
+
+    <form class="edit-form"
+        method="POST"
+        enctype="multipart/form-data">
+
+        {% csrf_token %}
+
+        <label for="name">Name</label>
+        <input
+            type="text"
+            id="name"
+            name="name"
+            value="{{ user.name }}"
+            required
+        >
+
+        <label for="avatar">Change profile photo</label>
+        <input
+            type="file"
+            id="avatar"
+            name="avatar"
+            accept="image/*"
+        >
+
+        <label for="bio">Change your bio</label>
+        <input 
+            type="text"
+            name="bio">
+
+        <button class="edit-btn" type="submit">
+            Save Changes
+        </button>
+    </form>
+
+    <a class="back-link" href="{% url 'profile' %}">
+        Back to Profile
+    </a>
+</div>
+
+{% endblock main %}

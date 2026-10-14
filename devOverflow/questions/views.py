@@ -1,4 +1,4 @@
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render, get_object_or_404
 
 from users.utils import get_curent_user
 
@@ -26,3 +26,12 @@ def all_posts(request):
         "current_user": get_curent_user(),
     }
     return render(request, "all_posts.html", context)
+
+
+
+def question_detail(req, id):
+    question = get_object_or_404(Questions, id=id)
+
+    return render(req, "question_detail.html", {
+        "question": question
+    })

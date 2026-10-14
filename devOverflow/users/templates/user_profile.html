@@ -1,14 +1,49 @@
+
 {% extends "master.html" %}
 
 {% block main %}
-    <div>
-        <h1>{{ user.name }}</h1>
-        <p>{{ user.email }}</p>
-        <p>{% if user.bio == "" %}
-                no bio yet
-            {% else %}
-                    {{ user.bio }}
-            {% endif %}
-        </p>
+
+<style>
+    img{
+        width: 120px;
+        border-radius: 20px
+    }
+</style>
+
+<div class="profile-container">
+    <h1 class="profile-title">Your Profile</h1>
+    <p class="profile-description">
+        Personalize your account with a profile photo.
+    </p>
+
+    <div class="profile-avatar">
+        {% if user.avatar %}
+            <img src="{{ current_user.avatar.url }}" alt="Profile avatar">
+        {% else %}
+            <div class="default-avatar">
+                {{ current_user.name|first|upper }}
+            </div>
+        {% endif %}
     </div>
+    <div>
+        <h1>{{ current_user.name }}</h1>
+        <p>{{ current_user.email }}</p>
+        {% if current_user.bio %}
+            <p>{{ current_user.bio }}</p>
+            {% else %}
+                <p>No bio yet</p>
+        {% endif %}
+    </div>
+
+    <hr>
+
+    <div>
+        {% for post in posts %}
+            <h2>{{ post.title }}</h2>
+            <p>{{ post.context }}</p>
+        {% endfor %}
+    </div>
+
+</div>
+
 {% endblock main %}

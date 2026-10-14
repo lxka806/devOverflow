@@ -1,0 +1,37 @@
+{% extends "master.html" %}
+
+
+{% block title %}user Details{% endblock title %}
+
+{% block main %}
+    <h1>User details</h1>
+
+    <h1>
+        {{ user.name }}
+    </h1>
+    <img src={{ user.avatar.url }} alt="">
+    <p>bio: {% if user.bio %}
+                {{ user.bio }}
+            {% else %}
+                no bio yet
+            {% endif %}
+    </p>
+
+    <div>
+        <h2>Users questions</h2>
+        {% for question in posts %}
+            <a href={% url 'question_detail' question.id %}>
+                <h1>{{ question.title }}</h1>
+                <p>{{ question.context }}</p>
+            </a>
+        {% endfor %}
+    </div>
+
+    <style>
+        img{
+            width: 120px;
+            border-radius: 20px
+        }
+    </style>
+
+{% endblock main %}
